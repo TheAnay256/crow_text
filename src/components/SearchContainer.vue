@@ -1,5 +1,11 @@
 <template>
   <div class="contentContainer">
+    <v-snackbar
+      v-model="error"
+      color="error"
+      timeout="1500"
+    > {{ errorMessage }}
+  </v-snackbar>
     <input ref="fileUpload" v-on:change="fileUploaded" type="file" hidden>
     <div class="button-search-container">
       <v-btn
@@ -12,6 +18,7 @@
       <v-text-field
         class="search"
         label="Search"
+        v-model="filterString"
         solo
         hide-details
       ></v-text-field>
@@ -30,8 +37,14 @@ import { textModule } from '@/store/TextModule.ts';
 
 @Component
 export default class SearchContainer extends Vue {
+  private error = false;
+  private errorMessage = "";
+  private filterString = "";
+
   get fileText() {
-    return textModule.text;
+    return textModule.text.filter(item => {
+      return item.toLowerCase().includes(this.filterString.toLowerCase());
+    });
   }
 
   $refs: {
@@ -43,13 +56,20 @@ export default class SearchContainer extends Vue {
   }
 
   async fileUploaded(event): Promise<void> {
-    let fileUpload: Blob = event.target.files[0];
+    try {
+      let fileUpload: Blob = event.target.files[0];
 
-    let fileOutput = <string>await fileUpload.text();
+      if(fileUpload.type === "text/plain") {
+        let fileOutput = <string>await fileUpload.text();
 
-    textModule.textUploaded(fileOutput.replace(/\r/g, "").split(/\n/));
-
-    //this.fileText = fileOutput.replace(/\r/g, "").split(/\n/);
+        textModule.textUploaded(fileOutput.replace(/\r/g, "").split(/\n/));
+      } else {
+        throw "Upload a text file, caw caw caw";
+      }
+    } catch(e) {
+      this.error = true;
+      this.errorMessage = e;
+    }
   }
 }
 </script>
