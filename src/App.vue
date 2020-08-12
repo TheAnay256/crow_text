@@ -2,56 +2,37 @@
   <v-app>
     <v-app-bar
       app
-      color="primary"
+      color="black"
       dark
     >
-      <div class="d-flex align-center">
+      <div class="titleBarContentContainer">
         <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
+          :src="require('./assets/crow.svg')"
           contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
+          height="50"
+          width="50"
         />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
+        <h2 class="headerTitle">Crownet</h2>
       </div>
-
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
     </v-app-bar>
 
     <v-main>
-      <HelloWorld/>
+      <v-container>
+        <SearchContainer/>
+      </v-container>
     </v-main>
   </v-app>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
+import SearchContainer from './components/SearchContainer.vue';
 
 export default Vue.extend({
   name: 'App',
 
   components: {
-    HelloWorld,
+    SearchContainer,
   },
 
   data: () => ({
@@ -59,3 +40,16 @@ export default Vue.extend({
   }),
 });
 </script>
+
+<style lang="less" scoped>
+  .titleBarContentContainer {
+    padding-left: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .headerTitle {
+      padding-left: 10px;
+    }
+  }
+</style>
