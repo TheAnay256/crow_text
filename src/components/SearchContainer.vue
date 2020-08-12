@@ -26,10 +26,13 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import { textModule } from '@/store/TextModule.ts';
 
 @Component
 export default class SearchContainer extends Vue {
-  private fileText: string[] = [];
+  get fileText() {
+    return textModule.text;
+  }
 
   $refs: {
     fileUpload: HTMLFormElement
@@ -39,12 +42,14 @@ export default class SearchContainer extends Vue {
     this.$refs.fileUpload.click();
   }
 
-  async fileUploaded(event): void {
+  async fileUploaded(event): Promise<void> {
     let fileUpload: Blob = event.target.files[0];
 
     let fileOutput = <string>await fileUpload.text();
 
-    this.fileText = fileOutput.replace(/\r/g, "").split(/\n/);
+    textModule.textUploaded(fileOutput.replace(/\r/g, "").split(/\n/));
+
+    //this.fileText = fileOutput.replace(/\r/g, "").split(/\n/);
   }
 }
 </script>
