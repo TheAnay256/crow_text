@@ -17,9 +17,9 @@
     </v-app-bar>
 
     <v-main>
-      <v-container>
+      <div class="appContentContainer">
         <SearchContainer/>
-      </v-container>
+      </div>
     </v-main>
   </v-app>
 </template>
@@ -51,5 +51,10 @@ export default Vue.extend({
     .headerTitle {
       padding-left: 10px;
     }
+  }
+
+  .appContentContainer {
+    padding-left: 20%;
+    padding-right: 20%;
   }
 </style>
